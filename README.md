@@ -27,8 +27,8 @@ OneHealth es una iniciativa que promueve soluciones tecnológicas al servicio de
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/tuusuario/laraai.git
-cd laraai
+git clone [https://github.com/PelayoVT/laraAI.git](https://github.com/PelayoVT/laraAI.git)
+cd laraAI
 ```
 
 ### 2. Backend (FastAPI)
