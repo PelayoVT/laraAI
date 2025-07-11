@@ -53,13 +53,13 @@ Accede a la app desde: [http://localhost:4200](http://localhost:4200)
 
 ## 🔐 Funcionalidades
 
+* Sistema conversacional especializado en ansiedad
 * Registro y login con seudónimo
 * Aceptación del consentimiento informado
 * Creación y cierre de conversaciones
 * Persistencia de sesiones
 * Exportación a PDF de conversaciones cerradas
 * Bloqueo de interacción cuando la conversación ha finalizado
-* Sistema conversacional especializado en ansiedad
 
 ## 📊 Estructura del proyecto
 
