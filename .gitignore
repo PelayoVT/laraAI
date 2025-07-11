@@ -1,0 +1,48 @@
+# entorno virtual
+env/
+
+# python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.log
+*.sqlite3
+*.env
+*.env.*
+
+# bbdd
+chatbot.db
+
+# checkpoints
+outputs/
+*.pt
+*.bin
+*.ckpt
+
+# angular
+node_modules/
+dist/
+.angular/
+.env
+package-lock.json
+
+# system
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# temps
+*.bak
+*.tmp
+*.swp
+*.~lock.*
+
+# pds exportados
+src/backend/pdfs/
+
+# salidas del modelo
+model_outputs/
+*.bin
+*.ckpt

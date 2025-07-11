@@ -1,0 +1,154 @@
+ 
+<ng-container *ngIf="consentimientoCargado">
+  <!-- Modal de consentimiento -->
+  <div *ngIf="mostrarModal" class="modal fade show d-block" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content shadow">
+        <div class="modal-header">
+          <h5 class="modal-title">Bienvenida a LaraAI</h5>
+        </div>
+        
+        <div class="modal-body">
+          <p *ngIf="modo === 'registro'">Este asistente virtual está diseñado para ayudarte a explorar cómo te sientes y evaluar tu ansiedad.</p>
+          <p *ngIf="modo === 'registro'"><strong>No sustituye atención profesional.</strong></p>
+          
+          <div class="mb-3">
+            <label for="seudonimo" class="form-label">Seudónimo</label>
+            <input type="text" [(ngModel)]="seudonimo" id="seudonimo" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" [(ngModel)]="password" id="password" class="form-control" required />
+          </div>
+          
+          <div class="form-check mb-3" *ngIf="modo === 'registro'">
+            <input class="form-check-input" type="checkbox" id="consentimiento" [(ngModel)]="consentimiento" />
+            <label class="form-check-label" for="consentimiento">
+              Acepto el tratamiento confidencial de los datos proporcionados.
+            </label>
+          </div>
+          
+          <div class="modal-footer">
+            <button class="btn btn-outline-secondary" (click)="toggleModo()">
+              {{ modo === 'registro' ? '¿Ya tienes cuenta? Inicia sesión' : '¿No tienes cuenta? Regístrate' }}
+            </button>
+            <button class="btn btn-primary" (click)="autenticar()">
+              {{ modo === 'registro' ? 'Registrarse' : 'Iniciar sesión' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+  <!-- Fondo oscuro detrás del modal -->
+  <div class="modal-backdrop fade show" *ngIf="mostrarModal"></div>
+    <div *ngIf="!mostrarModal">
+      <nav class="navbar navbar-expand-lg shadow">
+        <div class="container-fluid">
+          
+          <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/">
+            <img src="LaraAI-removebg-preview.png" alt="Logo" width="35" height="35" class="d-inline-block align-text-top">
+            <span class="fw-semibold">LaraAI</span>
+          </a>
+      
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+        </div>
+      </nav>
+      <div class="d-flex">
+        <!-- Sidebar -->
+        <div class="sidebar bg-light p-3 shadow">
+          <!-- Botones del sidebar -->
+          <div class="d-grid gap-2 mb-3">
+            <button 
+              class="btn btn-sm btn-outline-primary"
+              (click)="crearNuevaConversacion()"
+            >
+              + Nueva conversación
+            </button>
+            <button 
+              class="btn btn-sm btn-danger"
+              (click)="finalizarConversacion()"
+              *ngIf="idConversacion && !conversacionFinalizada"
+            >
+              Finalizar conversación
+            </button>
+            <button 
+              class="btn btn-sm btn-success w-100 mt-2" 
+              *ngIf="conversacionFinalizada" 
+              (click)="exportarPDF()">
+              Descargar PDF
+            </button>
+          </div>
+
+          <!-- Lista de conversaciones -->
+          <h6 class="mb-2">Tus conversaciones</h6>
+          <ul class="list-group mb-3">
+            <li
+              class="list-group-item list-group-item-action"
+              *ngFor="let conv of conversaciones"
+              [class.active]="conv.id === idConversacion"
+              (click)="cambiarConversacionId(conv.id)"
+            >
+              {{ conv.fecha_inicio | date:'short' }}
+            </li>
+          </ul>
+        </div>
+
+        <!-- Chat -->
+        <div class="chat-area">
+          <div class="chat-container">
+
+            <div class="chat-body" #chatBody>
+              <div *ngFor="let msg of mensajes" class="mb-2">
+                <div [ngClass]="msg.tipo === 'usuario' ? 'text-end' : 'text-start'">
+                  <div class="mb-1 small text-muted" [class.text-end]="msg.tipo === 'usuario'">
+                    {{ msg.tipo === 'usuario' ? 'Tú' : 'LaraAI' }}
+                  </div>
+                  <div class="chat-bubble"
+                      [ngClass]="{
+                        'usuario': msg.tipo === 'usuario',
+                        'bot': msg.tipo === 'bot'
+                      }">
+                    {{ msg.texto }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Indicador de escritura -->
+              <div *ngIf="escribiendo" class="text-start">
+                <div class="chat-bubble bot">
+                  <span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Input -->
+            <div class="chat-input">
+              <form (submit)="enviarMensaje()" class="formulario-chat">
+                <textarea
+                  [(ngModel)]="nuevoMensaje"
+                  name="mensaje"
+                  class="form-control mensaje-textarea"
+                  placeholder="Escribe tu mensaje..."
+                  [disabled]="bloqueado || conversacionFinalizada"
+                  autocomplete="off"
+                  rows="1"
+                  (keydown)="comprobarEnvio($event)"
+                  (input)="ajustarAltura($event)"
+                ></textarea>
+                <button type="submit" class="btn btn-primary enviarbtn" [disabled]="!nuevoMensaje.trim() || bloqueado || conversacionFinalizada">
+                  <i class="bi bi-send-fill"></i>
+                </button>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
+  </div>
+</ng-container> 

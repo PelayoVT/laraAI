@@ -1,0 +1,14 @@
+.navbar {
+    background-color: var(--violeta);
+}
+
+.enviarbtn {
+    background-color: var(--violeta);
+    border-color: var(--violeta);
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .enviarbtn:hover {
+    background-color: var(--violetaosc);
+    border-color: var(--violetaosc);
+  }  
